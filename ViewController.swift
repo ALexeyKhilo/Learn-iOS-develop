@@ -1,30 +1,52 @@
 //
 //  ViewController.swift
-//  TConverter
+//  WeekdayFinder
 //
-//  Created by Alexey Khilo on 2/12/22.
+//  Created by Alexey Khilo on 2/11/22.
 //
 
 import UIKit
 
 class ViewController: UIViewController {
-
-   
-    @IBOutlet weak var celsiusLabel: UILabel!
-    @IBOutlet weak var fahrenheitLabel: UILabel!
-    @IBOutlet weak var slider: UISlider! {
-        didSet{
-        slider.maximumValue = 100
-        slider.minimumValue = 0
-        slider.value = 0
-    }
-}
-    @IBAction func sliderValueChanges(_ sender: UISlider) {
-        let temperatureCelsius = Int(round(sender.value))
-        celsiusLabel.text = "\(temperatureCelsius)ºC"
+    
+    
+    @IBOutlet weak var dateTF: UITextField!
+    @IBOutlet weak var monthTF: UITextField!
+    @IBOutlet weak var yearTF: UITextField!
+     
+    @IBOutlet weak var resaultLabel: UILabel!
+    
+    @IBAction func findDay(_ sender: UIButton) {
+      
+        let calendar = Calendar.current
         
-        let temperatureFahrenheit = Int(round((sender.value * 9 / 5) + 32))
-        fahrenheitLabel.text = "\(temperatureFahrenheit)ºF"
+        var dateComponents = DateComponents()
+        guard let day = dateTF.text, let month = monthTF.text, let year = yearTF.text  else { return }
+        dateComponents.day = Int(day)
+        dateComponents.month = Int(month)
+        dateComponents.year = Int(year)
+        
+        guard let date = calendar.date(from: dateComponents) else { return }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        
+        let weekday = dateFormatter.string(from: date)
+        
+        resaultLabel.text = weekday
+        
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    
+    
 }
 
